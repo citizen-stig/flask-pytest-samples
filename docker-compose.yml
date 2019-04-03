@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:11
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=flask
+      - POSTGRES_PASSWORD=flask
+    ports:
+      - "5432:5432"
