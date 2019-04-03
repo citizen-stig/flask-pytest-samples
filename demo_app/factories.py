@@ -2,7 +2,6 @@ import warnings
 
 from flask import Flask
 
-
 from . import controllers
 from . import models
 
@@ -11,12 +10,6 @@ class AppConfig:
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'postgres://flask:flask@localhost/flask'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-
-
-class AppConfigTest(AppConfig):
-    DEBUG = False
-    TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'postgres://flask:flask@localhost/flask_test'
 
 
 def configure_db(app):
@@ -28,10 +21,11 @@ def configure_db(app):
     return db
 
 
-def create_app(testing=False):
+def create_app(config=None):
     filter_warnings()
     app = Flask(__name__)
-    config = AppConfig if not testing else AppConfigTest
+    if config is None:
+        config = AppConfig
     app.config.from_object(config)
     app.register_blueprint(controllers.blog)
     configure_db(app)
