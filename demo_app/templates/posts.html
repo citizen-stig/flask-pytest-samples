@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Posts</title>
+</head>
+<body>
+<h1>{{ category.name }}</h1>
+{% for post in category.posts %}
+    <div>
+    <h2>{{ post.title }}</h2>
+    <p> {{ post.pub_date }}</p>
+    <p> {{ post.body }}</p>
+    </div>
+{% else %}
+    <strong>no posts yet</strong>
+{% endfor %}
+</body>
+</html>
