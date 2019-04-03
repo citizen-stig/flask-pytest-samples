@@ -1,6 +1,5 @@
 from demo_app import factories
 
-
 app = factories.create_app()
 
 
