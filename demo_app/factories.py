@@ -13,6 +13,12 @@ class AppConfig:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
+class AppConfigTest(AppConfig):
+    DEBUG = False
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'postgres://flask:flask@localhost/flask_test'
+
+
 def configure_db(app):
     db = models.db
     db.app = app
@@ -22,10 +28,11 @@ def configure_db(app):
     return db
 
 
-def create_app():
+def create_app(testing=False):
     filter_warnings()
     app = Flask(__name__)
-    app.config.from_object(AppConfig)
+    config = AppConfig if not testing else AppConfigTest
+    app.config.from_object(config)
     app.register_blueprint(controllers.blog)
     configure_db(app)
     return app
