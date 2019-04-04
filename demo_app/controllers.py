@@ -14,7 +14,7 @@ def hello_world():
 
 @blog.route('/categories')
 def list_categories():
-    print('list categories, models.Category.query.session:', models.Category.query.session)
+    # print('list categories, models.Category.query.session:', models.Category.query.session)
     return '<br/>'.join(str(x.id) + ': ' + x.name for x in models.Category.query)
 
 
@@ -22,7 +22,7 @@ def list_categories():
 def create_category(name):
     if name:
         category = models.Category(name=name)
-        print('create_category models.db.session: {}'.format(models.db.session))
+        # print('create_category models.db.session: {}'.format(models.db.session))
         models.db.session.add(category)
         models.db.session.commit()
         return redirect(url_for('blog.list_categories'))
@@ -38,7 +38,7 @@ def rand_string(length, alphabet=ALPHABET):
 
 @blog.route('/category/<string:category_name>/')
 def list_posts(category_name):
-    print('list posts, models.Category.query.session:', models.Category.query.session)
+    # print('list posts, models.Category.query.session:', models.Category.query.session)
     category = models.Category.query \
         .filter(models.Category.name == category_name) \
         .first_or_404()
@@ -47,11 +47,11 @@ def list_posts(category_name):
 
 @blog.route('/category/<string:category_name>/<int:posts_number>')
 def create_x_posts(category_name, posts_number):
-    print('create posts, models.Category.query.session:', models.Category.query.session)
+    # print('create posts, models.Category.query.session:', models.Category.query.session)
     category = models.Category.query \
         .filter(models.Category.name == category_name)\
         .first_or_404()
-    print('create_category models.db.session: {}'.format(models.db.session))
+    # print('create_category models.db.session: {}'.format(models.db.session))
     for x in range(posts_number):
         post = models.Post(
             title=rand_string(20),

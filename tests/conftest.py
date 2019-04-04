@@ -7,6 +7,8 @@ from demo_app import factories, models
 
 from tests.utils import init_postgresql_database, drop_postgresql_database
 
+from tests import data
+
 
 class AppConfigTest(factories.AppConfig):
     DEBUG = False
@@ -40,3 +42,14 @@ def _db(app):
     """
     return models.db
 
+
+@pytest.fixture(scope='function')
+def category_factory(db_session):
+    data.CategoryFactory._meta.sqlalchemy_session = db_session
+    return data.CategoryFactory
+
+
+@pytest.fixture(scope='function')
+def post_factory(db_session):
+    data.PostFactory._meta.sqlalchemy_session = db_session
+    return data.PostFactory
