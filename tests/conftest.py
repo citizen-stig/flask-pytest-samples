@@ -3,7 +3,7 @@ from urllib.parse import urlparse
 import pytest
 
 
-from demo_app import factories
+from demo_app import factories, models
 
 from tests.utils import init_postgresql_database, drop_postgresql_database
 
@@ -30,3 +30,13 @@ def app(request):
         drop_postgresql_database(pg_user, pg_password, pg_host, pg_port, pg_db)
 
     return factories.create_app(AppConfigTest)
+
+
+@pytest.fixture(scope='session')
+def _db(app):
+    """
+    Provide the transactional fixtures with access to the database via a Flask-SQLAlchemy
+    database connection.
+    """
+    return models.db
+

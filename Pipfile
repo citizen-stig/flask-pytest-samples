@@ -11,6 +11,8 @@ flask-sqlalchemy = "*"
 psycopg2 = "*"
 pytest = "*"
 pytest-flask = "*"
+factory-boy = "*"
+pytest-flask-sqlalchemy = "*"
 
 [requires]
 python_version = "3.7"
