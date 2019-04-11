@@ -75,3 +75,6 @@ def test_list_posts(client, db_session, category_factory, post_factory):
     assert post2.title in data
     assert post3.title not in data
 
+
+def test_my_post(db_session, post_factory):
+    post = post_factory()

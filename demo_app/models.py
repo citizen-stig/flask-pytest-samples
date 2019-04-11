@@ -12,10 +12,13 @@ class Post(db.Model):
     pub_date = db.Column(db.DateTime, nullable=False,
                          default=datetime.utcnow)
 
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'),
-                            nullable=False)
+    category_id = db.Column(db.Integer,
+                            db.ForeignKey('category.id'),
+                            nullable=True)
     category = db.relationship('Category',
-                               backref=db.backref('posts', lazy=True))
+                               backref=db.backref(
+                                   'posts',
+                                   lazy=True))
 
     def __repr__(self):
         return '<Post %r>' % self.title
@@ -23,7 +26,7 @@ class Post(db.Model):
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String, unique=True, nullable=False)
 
     def __repr__(self):
         return '<Category %r>' % self.name

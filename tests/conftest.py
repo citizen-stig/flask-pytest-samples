@@ -12,11 +12,14 @@ class AppConfigTest(factories.AppConfig):
     DEBUG = False
     TESTING = True
     SQLALCHEMY_DATABASE_URI = 'postgres://flask:flask@localhost/flask_test'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
 @pytest.fixture(scope='session')
 def app(request):
-    db_uri = urlparse(AppConfigTest.SQLALCHEMY_DATABASE_URI)
+    app_ = factories.create_app(AppConfigTest)
+
+    db_uri = urlparse(app_.config['SQLALCHEMY_DATABASE_URI'])
     pg_host = db_uri.hostname
     pg_port = db_uri.port
     pg_user = db_uri.username
@@ -25,11 +28,15 @@ def app(request):
 
     init_postgresql_database(pg_user, pg_password, pg_host, pg_port, pg_db)
 
+    factories.configure_db(app_)
+
+    models.db.create_all()
+
     @request.addfinalizer
     def drop_database():
         drop_postgresql_database(pg_user, pg_password, pg_host, pg_port, pg_db)
 
-    return factories.create_app(AppConfigTest)
+    return app_
 
 
 @pytest.fixture(scope='session')
