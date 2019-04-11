@@ -1,9 +1,8 @@
 from flask import url_for
 
-from tests import data
-
 
 from demo_app import models
+
 
 def test_index(client):
     response = client.get(url_for('blog.hello_world'))
@@ -58,3 +57,21 @@ def test_create_two_categories(client, db_session):
     second_list_response = client.get(url_for('blog.list_categories'))
     assert second_list_response.status_code == 200
     # assert second_list_response.data == b'2: \xd1\x8e\xd0\xbd\xd0\xb8\xd0\xba\xd0\xbe\xd0\xb4<br/>3: 123'
+
+
+def test_list_posts(client, db_session, category_factory, post_factory):
+
+    category = category_factory()
+    url = url_for('blog.list_posts', category_name=category.name)
+    post1 = post_factory(category=category)
+    post2 = post_factory(category=category)
+    post3 = post_factory()
+
+    response = client.get(url)
+
+    assert response.status_code == 200
+    data = response.data.decode('utf-8')
+    assert post1.title in data
+    assert post2.title in data
+    assert post3.title not in data
+

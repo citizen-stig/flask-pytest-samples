@@ -1,13 +1,11 @@
 from urllib.parse import urlparse
 
 import pytest
-
+import factory
 
 from demo_app import factories, models
 
 from tests.utils import init_postgresql_database, drop_postgresql_database
-
-from tests import data
 
 
 class AppConfigTest(factories.AppConfig):
@@ -44,12 +42,38 @@ def _db(app):
 
 
 @pytest.fixture(scope='function')
-def category_factory(db_session):
-    data.CategoryFactory._meta.sqlalchemy_session = db_session
-    return data.CategoryFactory
+def base_factory(db_session):
+    class BaseFactory(factory.alchemy.SQLAlchemyModelFactory):
+        """Base model factory."""
+
+        class Meta:
+            abstract = True
+            sqlalchemy_session = db_session
+            sqlalchemy_session_persistence = 'flush'
+
+    return BaseFactory
 
 
 @pytest.fixture(scope='function')
-def post_factory(db_session):
-    data.PostFactory._meta.sqlalchemy_session = db_session
-    return data.PostFactory
+def category_factory(base_factory):
+    class CategoryFactory(base_factory):
+        class Meta:
+            model = models.Category
+
+        name = factory.Sequence(lambda n: u'Category %d' % n)
+
+    return CategoryFactory
+
+
+@pytest.fixture(scope='function')
+def post_factory(base_factory, category_factory):
+
+    class PostFactory(base_factory):
+        class Meta:
+            model = models.Post
+
+        title = factory.Sequence(lambda n: u'Post Title %d' % n)
+        body = factory.Sequence(lambda n: u'Post Body %d' % n)
+        category = factory.SubFactory(category_factory)
+
+    return PostFactory
