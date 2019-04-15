@@ -59,7 +59,7 @@ def test_create_two_categories(client, db_session):
     # assert second_list_response.data == b'2: \xd1\x8e\xd0\xbd\xd0\xb8\xd0\xba\xd0\xbe\xd0\xb4<br/>3: 123'
 
 
-def test_list_posts(client, db_session, category_factory, post_factory):
+def test_list_posts(client, category_factory, post_factory):
 
     category = category_factory()
     url = url_for('blog.list_posts', category_name=category.name)
@@ -76,5 +76,6 @@ def test_list_posts(client, db_session, category_factory, post_factory):
     assert post3.title not in data
 
 
-def test_my_post(db_session, post_factory):
+def test_my_post(post_factory):
     post = post_factory()
+    assert post.id is not None

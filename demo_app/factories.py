@@ -2,8 +2,8 @@ import warnings
 
 from flask import Flask
 
-from . import controllers
 from .models import db
+from . import controllers
 
 
 class AppConfig:

@@ -8,11 +8,13 @@ verify_ssl = true
 [packages]
 flask = "*"
 flask-sqlalchemy = "*"
-psycopg2 = "*"
+psycopg2 = "==2.8.1"
 pytest = "*"
 pytest-flask = "*"
-factory-boy = "*"
 pytest-flask-sqlalchemy = "*"
+factory-boy = "*"
+pyparsing = "==2.4.0"
+requests = "*"
 
 [requires]
 python_version = "3.7"
