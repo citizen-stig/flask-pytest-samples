@@ -1,4 +1,5 @@
 import warnings
+import os
 
 from flask import Flask
 
@@ -8,7 +9,7 @@ from . import controllers
 
 class AppConfig:
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'postgres://flask:flask@localhost/flask'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DB_URI', 'postgres://flask:flask@localhost/flask')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 

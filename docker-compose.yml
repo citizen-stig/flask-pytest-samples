@@ -2,7 +2,7 @@ version: '3'
 
 services:
   db:
-    image: postgres:11
+    image: postgres:11.5
     volumes:
       - ./db:/var/lib/postgresql/data
     environment:
@@ -10,3 +10,11 @@ services:
       - POSTGRES_PASSWORD=flask
     ports:
       - "5432:5432"
+  app:
+    build: .
+    links:
+      - db
+    depends_on:
+      - db
+    environment:
+      - DB_URI=postgres://flask:flask@db/flask_test

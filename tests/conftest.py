@@ -1,3 +1,4 @@
+import os
 from urllib.parse import urlparse
 
 import pytest
@@ -11,7 +12,7 @@ from tests.utils import init_postgresql_database, drop_postgresql_database
 class AppConfigTest(factories.AppConfig):
     DEBUG = False
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'postgres://flask:flask@localhost/flask_test'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DB_URI', 'postgres://flask:flask@localhost/flask_test')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 

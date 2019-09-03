@@ -1,4 +1,3 @@
-
 from flask import url_for
 import requests
 
@@ -26,6 +25,5 @@ def test_list_categories(live_server, category_factory):
 
     assert response_2.status_code == 200
     data_2 = response_2.content.decode('utf-8')
-    print(data_2)
     for category in categories:
         assert category.name in data_2
